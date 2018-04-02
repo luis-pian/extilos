@@ -1,5 +1,4 @@
 <?php
-  
 /**
  * Conecta com o MySQL usando PDO
  */
