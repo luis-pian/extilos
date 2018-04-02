@@ -17,7 +17,7 @@ if (empty($album))
 {
 	$_SESSION['resposta'] = 'alb_nome_negado';
 	//$_SESSION['n'] = $_POST['nomeUsuario'];
-   	header("Location: ../albuns-foto.php");
+   	header("Location: /aplicativo/albuns-foto.php");
     exit;
 }
 
@@ -37,7 +37,7 @@ if ($stmt->execute())
 {
 	//$_SESSION['e'] = $_POST['emailUsuBasico'];
 	$_SESSION['resp'] = 'alb_nome_criado';
-   header('Location: ../albuns-foto.php');
+   header('Location: /aplicativo/albuns-foto.php');
 }
 else
 {

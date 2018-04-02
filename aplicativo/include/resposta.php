@@ -1,10 +1,33 @@
 <?php $resposta = $_SESSION['resposta']; ?>
 
                                             
-    <?php
+  <?php
+    // RESPOSTA DA PUBLICAÇÃO DA IMAGEM
+  if($_SESSION['imagem'] == 'sucesso'){
+  ?>
+  <div class="alert">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+          <p class="text-muted" ><b><font color="0da314">Legal!</b> Seu extilo já foi publicado.</font></p>
+  </div>
+  <?php
+  unset($_SESSION['imagem']);}
+  // RESPOSTA DA PUBLICAÇÃO DA IMAGEM
+  if($_SESSION['imagem'] == 'alerta'){
+  ?>
+  <div class="alert">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+          <p class="text-muted" ><b><font color="00691c">Atenção!</b> Publicamos seu eXtilo, porém deixamos de carregar alguma(s) foto(s) por causa do tamanho do arquivo. <a>Saiba Mais</a></font></p>
+  </div>
+  <?PHP
+  unset($_SESSION['imagem']);}
     // RESPOSTA DA PÁGINA DE REGISTRO - CADASTRO FEITO COM SUCESSO
   if ($resposta == 'sucesso' ){ 
-    header('Location: ../login.php');
+    ?>
+     <div class="alert">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+          <p class="text-muted" ><b><font color="0da314">Sucesso!</b> Entre com seu email e senha.</font></p>
+      </div>
+    <?php
     unset($_SESSION['resposta']);}
     ?>
     <?php

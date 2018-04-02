@@ -46,6 +46,7 @@ if(isset($_SESSION['idLogado'])){
                <div id="load" style="display: none" >
                   <p><i class="fa fa-spinner fa-spin" style="font-size:24px"></i> Verificando</p>
                </div>
+               <div class="box">
                 <h3>Login</h3>
                 <?php
                 date_default_timezone_set('America/Sao_Paulo');
@@ -59,6 +60,7 @@ if(isset($_SESSION['idLogado'])){
                             ?>
                             <p class="lead"><?php echo "$resp"; ?></p>
                             <hr>
+
                             <form action="functions/logar.php" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="email">Email</label>
@@ -77,6 +79,7 @@ if(isset($_SESSION['idLogado'])){
                             </form>
 
                 <a href="register.php" class="btn btn-lg btn-block btn-default btn-secondary">Cadastre-se</a>
+                </div>
                 </div>
                     <!-- /.container -->
             </div>

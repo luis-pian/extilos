@@ -14,7 +14,7 @@ if ($_SESSION['captcha'] === $captcha){
 		$_SESSION['n'] = $_POST['nomeUsuario'];
 		$_SESSION['e'] = $_POST['emailUsuario'];
 		unset($_SESSION['captcha']);
-		header("Location: ../register.php"); exit;
+		header("Location: /aplicativo/register.php"); exit;
 	}
 
 // pega os dados do formuário
@@ -35,7 +35,7 @@ if (empty($emailUsuario) || empty($senhaUsuario) )
 	$_SESSION['resposta'] = 'nome_email';
 	$_SESSION['n'] = $nomeUsuario;
 	$_SESSION['e'] = $emailUsuario;
-   	header("Location: ../register.php");
+   	header("Location: /aplicativo/register.php");
     exit;
 }
 
@@ -58,7 +58,7 @@ if ($stmt->execute())
 {
 	$_SESSION['e'] = $emailUsuario;
 	$_SESSION['resposta'] = 'sucesso';
-    header('Location: ../login.php');
+    header('Location: /aplicativo/login.php');
 }
 else
 {

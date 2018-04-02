@@ -55,7 +55,7 @@ $albumImagemResposta = banco_inicio($idTorre, $inicio, $fim);
                                         ?>
                                         <div class="">
                                             <a href="#">
-                                               <img src="/extilos/aplicativo/imagem/<?php echo $quantasFotos[$g] ?>" alt="" class="img-responsive">
+                                               <img src="imagem/<?php echo $quantasFotos[$g] ?>" alt="" class="img-responsive">
                                            </a>
                                        </div>
                                        <?php

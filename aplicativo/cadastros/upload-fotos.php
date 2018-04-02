@@ -155,7 +155,7 @@ if(isset($_FILES['imagem']))
                           {
                           }else{
                             $_SESSION['resposta'] = 'alb_erro_hash';
-                            header('Location: ../enviar-fotos.php');
+                            header('Location: /aplicativo/enviar-fotos.php');
                             exit;
                           }
                         }
@@ -175,14 +175,14 @@ if(isset($_FILES['imagem']))
                           {
                           }else{
                             $_SESSION['resposta'] = 'alb_erro_arroba';
-                            header('Location: ../enviar-fotos.php');
+                            header('Location: /aplicativo/enviar-fotos.php');
                             exit;
                           }
                         }
-                       header('Location: ../enviar-fotos.php');
+                       header('Location: /aplicativo/enviar-fotos.php');
                       }
                       else
                       {
                        $_SESSION['resposta'] = 'alb_erro';
-                        header('Location: ../enviar-fotos.php');
+                        header('Location: /aplicativo/enviar-fotos.php');
                      }

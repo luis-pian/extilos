@@ -108,13 +108,13 @@ $while = album_while($idLogado);
             </div>
         </div>
     </div>
-    <script src="/extilos/aplicativo/js/jquery-1.11.0.min.js"></script>
-    <script src="/extilos/aplicativo/js/bootstrap.min.js"></script>
-    <script src="/extilos/aplicativo/js/jquery.cookie.js"></script>
-    <script src="/extilos/aplicativo/js/waypoints.min.js"></script>
-    <script src="/extilos/aplicativo/js/modernizr.js"></script>
-    <script src="/extilos/aplicativo/js/bootstrap-hover-dropdown.js"></script>
-    <script src="/extilos/aplicativo/js/owl.carousel.min.js"></script>
-    <script src="/extilos/aplicativo/js/front.js"></script>
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/waypoints.min.js"></script>
+    <script src="js/modernizr.js"></script>
+    <script src="js/bootstrap-hover-dropdown.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/front.js"></script>
 </body>
 </html>
