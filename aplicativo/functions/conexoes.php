@@ -1,5 +1,46 @@
 <?php
-	//FILTRO PARA APRESENTAÇÃO NA PÁGINA DE INICIO
+	//BUSCA ALBUM PELO ID DO USUÁRIO - FOLHA DE CADASTRO DE ALBUM E POST
+	function usuario_album($idUsuario){
+		$PDO = db_connect();
+		$sql = "SELECT idAlbum, album FROM album_usuarios where idUsuario = $idUsuario order by RAND() asc";
+		$stmt = $PDO->prepare($sql);
+		$stmt->execute();
+		return $stmt;
+	}
+	//VERIFICA QUAIS AS PÁGINAS O USUÁRIO TEM ACESSO
+	function usuario_pagina($idUsuario){
+		$PDO = db_connect();
+		$sql_pagina = "SELECT * FROM ext_paginas where idUsuario = $idUsuario OR idUsuario2 = $idUsuario OR idUsuario3 = $idUsuario order by nomePagina asc";
+		$stmt_pagina = $PDO->prepare($sql_pagina);
+		$stmt_pagina->execute();
+		return $stmt_pagina;
+	}
+	//BUSCA TORRES
+	function busca_torre ($preferencia){
+		$PDO = db_connect();
+		$sql_torre = "SELECT * FROM ext_torre WHERE setorTorre LIKE '%$preferencia%' order by RAND() LIMIT 10";
+		$stmt_torre = $PDO->prepare($sql_torre);
+		$stmt_torre->execute();
+		return $stmt_torre;
+	}
+	//TOPO TORRES
+	function topo_torre ($topoTorre){
+		$PDO = db_connect();
+		$sql_torre = "SELECT * FROM ext_torre WHERE idTorre = $topoTorre";
+		$stmt_torre = $PDO->prepare($sql_torre);
+		$stmt_torre->execute();
+		$stmt_torre = $stmt_torre->fetch(PDO::FETCH_ASSOC);
+		return $stmt_torre;
+	}
+	//CONSULTA A TORRE DE PREFERÊNCIA DO USUÁRIO - FOLHA DE CADASTRO
+	function banco_torre($idAlbum){
+		$PDO = db_connect();
+		$sql_torre = "SELECT idTorre, nomeTorre FROM ext_torre where torreSistema = 'sim' order by RAND() asc";
+		$stmt_torre = $PDO->prepare($sql_torre);
+		$stmt_torre->execute();
+		return $stmt_torre;
+	}
+	//FILTRO PARA APRESENTAÇÃO - PÁGINA DE INICIO
 	function pagina_inicio ($postagem){
 		$PDO = db_connect();
 		$sql_inicio = "SELECT * FROM ext_fans FROM idUsuario = $idLogado";
@@ -7,7 +48,6 @@
 		$sql_inicio->execute();
 	}
 	// CONSULTA PARA SABER SE ALBUM PERTENCE AO USUÁRIO QUE ESTA EDITANDO
-
 	// BUSCA OS ALBUNS DO USUÁRIO COM PARÂMETRO INFORMADO VIA GET
 	//verifica o nome do album
 	function banco_album($idLogado, $idAlbum){
@@ -45,14 +85,7 @@
 		$albumImagemResposta->execute();
 		return $albumImagemResposta;
 	}
-	//CONSULTA A TORRE DE PREFERÊNCIA DO USUÁRIO
-	function banco_torre($idAlbum){
-		$PDO = db_connect();
-		$sql_torre = "SELECT idTorre, nomeTorre FROM ext_torre where torreSistema = 'sim' order by RAND() asc";
-		$stmt_torre = $PDO->prepare($sql_torre);
-		$stmt_torre->execute();
-		return $stmt_torre;
-	}
+	
 
 
 	//CONSULTA PARA EXIBIR OS CONTEÚDOS DA PÁGINA PRINCIPAL

@@ -3,9 +3,22 @@ ob_start();
 session_start();
 //VERIFICA SE USUÁRIO TEM ACESSO A PÁGINA
 if(!isset($_SESSION['idLogado']) && (!isset($_POST['emailUsuario']))){
-    $_SESSION['resp'] = 'negado';
+    $_SESSION['resposta'] = 'negado';
     header("Location: login.php"); exit;
-} 
+}
+//VERIFICA SE EXISTE O MÉTODO PASSADO VIA GET
+if (isset($_POST['idAlbum'])){
+        if (isset($_POST['nomeAlbum'])){
+            $idAlbum = $_POST['idAlbum'];
+            //$idAlbum = substr($idAlbum, 3,-4);
+            $nomeAlbum = $_POST['nomeAlbum'];
+        }
+        //TRATA OS CONTEÚDOS QUE SÃO PASSADOS VIA GET
+        //$idAlbum = sanitizeString($idAlbum);
+        //$nomeAlbum = sanitizeString($nomeAlbum);
+    }else{
+        header("Location: album.php"); exit;
+    }
 //INCLUI AS FUNÇÕES NECESSÁRIAS
 include_once 'functions/validar.php';
 include_once 'functions/functions.php';
@@ -15,7 +28,7 @@ include_once 'include/modal.php';
 $albumResposta = banco_album($idLogado, $idAlbum);
 // VERIFICA SE O USUÁRIO TEM PERMISÃO PARA ACESSAR O ALBUM.
 if ($albumResposta['album']!= $nomeAlbum){
-    header("Location: ../albuns-foto.php"); exit;
+    header("Location: album.php"); exit;
     }
 // RETORNA OS VALORES DO BANCO DE FOTOS REFERENTE AO ALBUM SELECIONADO
 $albumImagemResposta = banco_imagem($idAlbum);
@@ -52,14 +65,16 @@ $albumImagemResposta = banco_imagem($idAlbum);
 <body>
     <div id="all">
             <div id="content">
-                <div class="container box">
+                <div class="container box ">
                 <div class="" id="customer-order">
                     <a type="button" class="" data-toggle="modal" data-target="#modal-fotos">
                     <i class="pull-right fa fa-align-justify"></i></a>
-                    <h4>Fotos do album</h4>
+                    <h4>Estilo</h4>
                     <!-- CARD DE EXIBIÇÃO -->
-                    <div class="col-md-9" id="wishlist">
-                        <h3><?php echo $albumResposta['album']?></h3>
+                    <div class="col-md-9" id="wishlist">    
+                    <hr>
+                         <h3 class="text-center"><?php echo $albumResposta['album']?></h3>
+                    <hr>
                         <?php while ($fotos = $albumImagemResposta->fetch(PDO::FETCH_ASSOC)): //prepara o conteúdo para ser listado ?>
                         <!-- INFORMAÇÃOE DO ALBUM -->
                         <div class="box slideshow">
@@ -100,7 +115,7 @@ $albumImagemResposta = banco_imagem($idAlbum);
                                         ?>
                                         <div class="">
                                             <a href="#">
-                                               <img src="/extilos/aplicativo/imagem/<?php echo $quantasFotos[$g] ?>" alt="" class="img-responsive">
+                                               <img src="imagem/<?php echo $quantasFotos[$g] ?>" alt="" class="img-responsive">
                                            </a>
                                        </div>
                                        <?php
@@ -111,23 +126,27 @@ $albumImagemResposta = banco_imagem($idAlbum);
                         </div>
                         <?php endwhile; ?>
                     </div>
+                    <?php
+                        if (!isset($conta)){
+                            echo '<p class="text-center">Ainda não tem conteúdo neste estilo</p>';
+                        }
+                    ?>
                     <!-- END CARD EXIBIÇÃO -->
                 </div>
                 <!-- END CONTAINER -->
             </div>
             <!-- END CONTENT -->
         <!-- RODAPÉ -->
-        <?php include_once "include/rodape.php" ?>
     </div>
 
-<script src="/extilos/aplicativo/js/jquery-1.11.0.min.js"></script>
-<script src="/extilos/aplicativo/js/bootstrap.min.js"></script>
-<script src="/extilos/aplicativo/js/jquery.cookie.js"></script>
-<script src="/extilos/aplicativo/js/waypoints.min.js"></script>
-<script src="/extilos/aplicativo/js/modernizr.js"></script>
-<script src="/extilos/aplicativo/js/bootstrap-hover-dropdown.js"></script>
-<script src="/extilos/aplicativo/js/owl.carousel.min.js"></script>
-<script src="/extilos/aplicativo/js/front.js"></script>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/modernizr.js"></script>
+<script src="js/bootstrap-hover-dropdown.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/front.js"></script>
 
 
 

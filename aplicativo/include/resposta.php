@@ -1,9 +1,12 @@
-<?php $resposta = $_SESSION['resposta']; ?>
+<?php 
+$resposta   =   isset($_SESSION['resposta'])  ? $_SESSION['resposta'] : null;
+$imagem     =   isset($_SESSION['imagem'])    ? $_SESSION['imagem']   : null;
+?>
 
-                                            
+
   <?php
     // RESPOSTA DA PUBLICAÇÃO DA IMAGEM
-  if($_SESSION['imagem'] == 'sucesso'){
+  if($imagem == 'sucesso'){
   ?>
   <div class="alert">
       <button type="button" class="close" data-dismiss="alert">×</button>
@@ -12,7 +15,7 @@
   <?php
   unset($_SESSION['imagem']);}
   // RESPOSTA DA PUBLICAÇÃO DA IMAGEM
-  if($_SESSION['imagem'] == 'alerta'){
+  if($imagem == 'alerta'){
   ?>
   <div class="alert">
       <button type="button" class="close" data-dismiss="alert">×</button>

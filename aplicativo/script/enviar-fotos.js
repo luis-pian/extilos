@@ -27,7 +27,7 @@ $("#upload_file").on('change', function () {
 
     					image_holder.show();
     					reader.readAsDataURL($(this)[0].files[i]);
-    					document.getElementById('qtde_preview').innerHTML = '<p>'+countFiles+' arquivos selecionados</p>';
+    					document.getElementById('qtde_preview').innerHTML = '<p>'+countFiles+' arquivo(s) selecionado(s)</p>';
     				}
 
     			} else {
@@ -43,7 +43,7 @@ $(document).ready(function(){
                 $("#marcacao").on('keyup focusout',function(){
                     var hashTag = $("#marcacao").val();
                     $.ajax({
-                        url: 'include/buscaTag.php',
+                        url: 'functions/buscaTag.php',
                         type: 'POST',
                         data: {marcacao:hashTag},
                         success: function(data)

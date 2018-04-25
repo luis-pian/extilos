@@ -1,12 +1,16 @@
 <?php
-
-
-$idTorre = 1;
-$inicio = 1;
-$fim = 2;
-
+ob_start();
+session_start();
+include_once '../../functions/functions.php';
+include_once '../../functions/conexoes.php';
+require_once '../../conn/init.php';
+include_once '../../cadastros/caracteres-especiais.php';
+$idTorre = $_POST['torre'];
+$inicio = $_POST['inicio'];
+$fim = $_POST['fim'];
+$qtd = $_POST['qtd'];
 //$total = inicio_total($idTorre);
-
+echo $fim;
 $albumImagemResposta = banco_inicio($idTorre, $inicio, $fim);
 ?>
 
@@ -51,7 +55,7 @@ $albumImagemResposta = banco_inicio($idTorre, $inicio, $fim);
                                         ?>
                                         <div class="">
                                             <a href="#">
-                                               <img src="/extilos/aplicativo/imagem/<?php echo $quantasFotos[$g] ?>" alt="" class="img-responsive">
+                                               <img src="imagem/<?php echo $quantasFotos[$g] ?>" alt="" class="img-responsive">
                                            </a>
                                        </div>
                                        <?php
@@ -63,3 +67,21 @@ $albumImagemResposta = banco_inicio($idTorre, $inicio, $fim);
                         <?php endwhile;
                         ?>
                     </div>
+                    <?php
+                        if($qtd > 40){
+                    ?>
+                            <button  class="btn btn-sm btn-block btn-primary" onclick="carregamais()">Carregar mais...</button>
+                    <?php
+                        }
+                    ?>
+<!-- PRECISA DE ATENÇÃO PARA RESOLVER ESSE PROBLEMA -->
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/front.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<!-- essa parte esta me causando um aleta no console, porque ele esta carregando os scripts dentro do body (precisa resolver isso de uma outra forma)
+referencia para estudo https://pt.stackoverflow.com/questions/97354/erro-synchronous-xmlhttprequest-on-the-main-thread-is-deprecated
+
+Console: Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience.
+Porque: As tags <script> com atributo src dentro do <body> também podem causar problemas (se estiver dentro do <head> não há problema). O motivo é que no meio do carregamento da página, quando a página já renderizou pela metade, o navegador é obrigado a parar e baixar um script do servidor, ocasionando o mesmo problema do AJAX síncrono.-->

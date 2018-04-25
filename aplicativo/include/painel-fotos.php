@@ -3,16 +3,16 @@
 
 		<ul class="nav nav-pills nav-stacked">
 			<li>
-				<a href="/extilos/aplicativo/enviar-fotos.php"><i class="fa fa-camera"></i> Carregar Fotos</a>
+				<a href="enviar-fotos.php"><i class="fa fa-camera"></i> Carregar Fotos</a>
 			</li>
 			<li>
-				<a href="/extilos/aplicativo/albuns-foto.php"><i class="fa fa-bookmark"></i> Albuns de Fotos</a>
+				<a href="album.php"><i class="fa fa-bookmark"></i> Albuns de Fotos</a>
 			</li>
 			<li>
-				<a href="/extilos/aplicativo/paginas-usuario.php"><i class="fa fa-list"></i> Minhas Páginas</a>
+				<a href="paginas-usuario.php"><i class="fa fa-list"></i> Minhas Páginas</a>
 			</li>
 			<li>
-				<a href="/extilos/aplicativo/end.php"><i class="fa fa-list"></i> Sair</a>
+				<a href="end.php"><i class="fa fa-list"></i> Sair</a>
 			</li>
 			
 		</ul>

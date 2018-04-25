@@ -18,9 +18,75 @@ if(isset($_SESSION['idLogado']) && (isset($_POST['emailUsuario']))){
 
 }else{
 // USUÁRIOS VISITANTES
+$preferencia = "Moderno";
+$torre = busca_torre($preferencia);
+?>
+			<div id="hot">
+				<div class="container-full">
+                    <div class="product-slider">
+                    <?php while ($resultado_torre = $torre->fetch(PDO::FETCH_ASSOC)): //prepara o conteúdo para ser listado ?>
+	                    <form action="index.php" method="post">
+	                        	<div class="item">
+		                            <div class="product">
+		                                <img src="img/main-slider1.jpg" alt="" class="img-responsive">
+		                                <div class="text">
+		                                    <h4>♜ | <?php echo $resultado_torre['nomeTorre'] ?></h4>
+		                                    <input type="submit" class="btn btn-sm btn-block btn-default btn-primary" value="Visitar">
+		                                    <input type="hidden" name="torre" value=<?php echo $resultado_torre['idTorre'] ?>>
+		                                    <input type="hidden" name="qtdpost" value="20">
+		                                </div>
+		                                <div class="ribbon sale">
+		                                    <div class="theribbon"><center>fãs<br>1200</center></div>
+		                                    <div class="ribbon-background"></div>
+		                                </div>
+		                                <!-- /.ribbon -->
 
-include'include/conteudos/listaTorres.php';
-include_once 'include/conteudos/topoTorre.php';
+		                                <div class="ribbon new">
+		                                    <div class="theribbon"><center>Visitas<br>+300</center></div>
+		                                    <div class="ribbon-background"></div>
+		                                </div>
+		                                <!-- /.ribbon -->
+		                            </div>
+	                            <!-- /.product -->
+	                            </div>
+	                    </form>
+	                  <?php endwhile ?>
+                    </div>
+                </div>
+			</div>
+<?php
+if (isset($_POST['torre'])){
+	$topoTorre = $_POST['torre'];
+	$topoTorre = topo_torre($topoTorre);
+
+?>
+			<div class="luis" id="customer-order">
+                    <div class="box" id="contact">
+                        <h2 class="text-center"><?php echo $topoTorre['nomeTorre'] ?></h2>
+                        <img src="img/main-slider1.jpg" alt="" class="img-responsive">
+                        <p class="lead text-center">Descritivo principal da torre</p>
+                        <hr>
+                        <div class="group">
+                        <p class="text-center buttons">
+                        <a href="#"  class="btn btn-sm btn-default btn-secondary mesmo-tamanho">120<br>Fãs</a>
+                        <a href="#"  class="btn btn-sm btn-default btn-secondary mesmo-tamanho">35<br>Paginas</a>
+                        <a href="#"  class="btn btn-sm btn-default btn-secondary mesmo-tamanho">21<br>Lojas</a>
+                        <a href="#"  class="btn btn-sm btn-default btn-secondary mesmo-tamanho">30<br>Produtos</a>
+                        </p>
+                        <a href="#" data-toggle="modal" data-target="#modal-gratuito" class="btn btn-sm btn-block btn-primary ">Ganhou +1 Fã</a>
+
+                        </div>
+                        <hr>
+                        <p>Ranking da Torre</p>
+
+                        <!-- /.panel-group -->
+                    </div>
+            </div>
+<?php
+}
+
+//include'include/conteudos/listaTorres.php';
+//include_once 'include/conteudos/topoTorre.php';
 include_once 'include/conteudos/bannerTorre.php';
 include_once 'include/conteudos/conteudoTorre.php';
 ?>

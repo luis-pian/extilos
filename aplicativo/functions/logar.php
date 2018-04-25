@@ -3,7 +3,7 @@ ob_start();
 session_start();
 require_once '../conn/init.php';
 require_once '../cadastros/caracteres-especiais.php';
-
+$retorno = isset($_SESSION['retorno']) ? $_SESSION['retorno'] : 'index.php';
         if(isset($_POST['logar'])){
                     $email_limpo = sanitizeString($_POST['emailUsuario']);
                     $emailUsuario = trim(strip_tags( $email_limpo));
@@ -25,27 +25,30 @@ require_once '../cadastros/caracteres-especiais.php';
                         $idlog = $user['idUsuario'];
                         $nomelog = $user['nomeUsuario'];
                         $arroba = $user['usuMarca'];
+                        $usuProf = $user['usuProf'];
 
                         $_SESSION['usuarioLogado'] ='';
                         $_SESSION['senhaLogado'] = '';
                         $_SESSION['idLogado'] = '';
                         $_SESSION['nomeLogado'] = '';
                         $_SESSION['arroba'] = '';
+                        $_SESSION['usuProf'] = '';
 
                         $_SESSION['usuarioLogado'] = $emailUsuario;
                         $_SESSION['senhaLogado'] = $senhaUsuario;
                         $_SESSION['idLogado'] = $idlog;
                         $_SESSION['nomeLogado'] = $nomelog;
                         $_SESSION['arroba'] = $arroba;
-                            $_SESSION['resposta'] = 'libera_entrada';
+                        $_SESSION['usuProf'] = $usuProf;
+                        $_SESSION['resposta'] = 'libera_entrada';
                             sleep(2);
-                            header("Location: ../index.php");
+                            header("Location: ../".$retorno);
 
                     }else{
                             
                             $_SESSION['resposta'] = 'login_invalido';
                             sleep(2);
-                            header("Location: ../login.php");
+                            header("Location: ../".$retorno);
                         }
                 }catch(PDOExeception $e){
                             echo $e;

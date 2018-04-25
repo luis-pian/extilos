@@ -4,30 +4,28 @@ session_start();
 //verifica se usuario está logado para acessar a página
 if(!isset($_SESSION['idLogado']) && (!isset($_POST['emailUsuario']))){
     $_SESSION['respesposta'] = 'negado';
+    $_SESSION['retorno'] = 'foto.php';
     header("Location: login.php"); exit;
 } 
 //abre a conexão com banco de dados
 require_once 'conn/init.php';
+require_once 'functions/conexoes.php';
 $PDO = db_connect();
 //puxa da session o id do usuario
 $idLogado = $_SESSION['idLogado'];
+//carrega as informações necessárias do banco para a páginas
+$usuarioAlbum = usuario_album($idLogado);
 //carrega as informações necessárias do banco para a página
-$sql = "SELECT idAlbum, album FROM album_usuarios where idUsuario = $idLogado order by RAND() asc";
-$stmt = $PDO->prepare($sql);
-$stmt->execute();
-
-//carrega as informações necessárias do banco para a página
-$sql_pagina = "SELECT * FROM ext_paginas where idUsuario = $idLogado OR idUsuario2 = $idLogado OR idUsuario3 = $idLogado order by nomePagina asc";
-$stmt_pagina = $PDO->prepare($sql_pagina);
-$stmt_pagina->execute();
+$usuarioPagina = usuario_pagina($idLogado);
 
 $corBotao = 2;
 
 if ($corBotao == 1){
 	$corBotao = 'css/style.blue.css';
 }else{
-	$corBotao = 'css/style.pink.css';
+	$corBotao = 'css/style.mono.css';
 }
+include_once 'include/modal.php';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -53,7 +51,7 @@ if ($corBotao == 1){
     <!-- theme stylesheet -->
     <link href=<?php echo $corBotao ?> rel="stylesheet" id="theme-stylesheet">
     <!-- your stylesheet with modifications -->
-    <link href="css/custom.css" rel="stylesheet">
+    <link href="css/meu.css" rel="stylesheet">
     <script src="js/respond.min.js"></script>
     <link rel="shortcut icon" href="favicon.png">
 </head>
@@ -62,60 +60,20 @@ if ($corBotao == 1){
     <div id="all">
         <div id="content">
             <div class="container box">
-              <!-- TOPO DA ÁREA DO APLICATIVO -->
-              <div class="navbar-header">
-                <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
-                    <img src="imagem/extilos_preto.png" alt="eXtilos.com" class="img-responsive">
-                    <div class="navbar-buttons">
-                        <div class="col-md-6" data-animate="fadeInDown">
-                            <a type="button" class="navbar-toggle" data-toggle="modal" data-target="#login-modal">
-                             <span class="sr-only">Nav</span>
-                             <i class="fa fa-align-justify"></i>
-                         </a>
-                     </div>
-                     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
-                        <div class="modal-dialog modal-sm">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="Login">Painel de Imagens</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <?php include 'include/painel-fotos.php'  ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- TOPO DA ÁREA DO APLICATIVO -->
-            <hr>
             <!-- CONTEÚDO DA PÁGINA -->
             <div class="" id="customer-order">
-              <h4>Postar fotos</h4>
-              <p class="text-muted">Carregue até 5 fotos para cada extilo.</p>
+            <a type="button" class="" data-toggle="modal" data-target="#modal-fotos">
+              <i class="pull-right fa fa-align-justify"></i></a>
+              <h4>Publicar contúdo</h4>
+              <p class="text-muted">Carregue até 5 fotos.</p>
               <?php
+              echo $_SESSION['resposta'];
               if(isset($_SESSION['imagem'])){
                 include_once 'include/resposta.php';
             }
             ?>
             <form action="cadastros/upload-fotos.php" method="post" enctype="multipart/form-data">
                 <div class='input-wrapper'>
-                    <label for='upload_file' class="upload">Selecionar fotos &#187;</label>
-                    <input type="file" id="upload_file" name="imagem[]" onchange="preview_image();" multiple size="5" class="upload_file" accept="image/jpeg, image/png, image/jpg," />
-                    <input id='upload_file' type='file' value='' />
-                    <span id='file-name'></span>
-                    <div class="foto" id="qtde_preview"></div>
-                    <hr>
-                    <div class="form-group">
-                        <label for="name">Álbum</label>
-                        <select class="form-control" name="usuEstilo" id="estilo" required>
-                            <?php while ($user = $stmt->fetch(PDO::FETCH_ASSOC)): //LISTA NOME DOS ALBUNS ?>
-                                <?php $nomeAlbum = $user['album']; $idAlbum = $user['idAlbum'];?>
-                                <option value="<?php echo $nomeAlbum ?>"><?php echo $nomeAlbum ?></option>
-                            <?php endwhile; ?>
-                        </select>
-                    </div>
                     <div class="form-group">
                         <label for="subject">Título</label>
                         <input type="text" class="form-control" name="usuTitulo" id="subject" required>
@@ -125,10 +83,63 @@ if ($corBotao == 1){
                         <textarea type="text" class="form-control" name="usuMarca" id="marcacao" placeholder="Marcação: #paginas | @pessoas" rows="5"></textarea>
                         <div id="resultadohashPag"></div>
                     </div>
-
+                    <label for='upload_file' class="upload">Selecionar fotos</label>
+                    <input type="file" id="upload_file" name="imagem[]" onchange="preview_image();" multiple size="5" class="upload_file" accept="image/jpeg, image/png, image/jpg,"/>
+                    <input id='upload_file' type='file' value='' />
+                    <span id='file-name'></span>
+                    <div class="foto" id="qtde_preview"></div>
+                    <hr>
+                    <?php if(isset($_SESSION['usuProf'])){
+                        if($_SESSION['usuProf'] == 'sim'){
+                            ?>
+                    <div class="form-group">
+                     <input data-toggle="collapse" class="btn btn-sm btn-block btn-default" data-parent="#accordion" href="#faq1" value="Adicionar preços e condições">
+                     </div>
+                    <div id="faq1" class="panel-collapse collapse">
+                        <label for="subject">Preço Normal</label>
+                        <input type="text" class="form-control" name="precPro" >
+                        <label for="subject">Preço com Desconto</label>
+                        <input type="text" class="form-control" name="descPro" >
+                        <label for="subject">Forma de Pagamento</label>
+                        <select class="form-control" name="formaPro">
+                        <option value="0">Selecione</option>
+                        <option value="1" >Dinheiro</option>
+                        <option value="2" >Dinheiro / Débito</option>
+                        <option value="3" >Dinheiro / Débito / Crédito</option>
+                        <option value="4" >Dinheiro / Débito / Crédito / Boleto</option>
+                        <option value="5" >A combinar</option>
+                        </select>
+                        <label for="subject">Informação complementar</label>
+                        <textarea type="text" class="form-control" name="infoPro" id="subject" rows="2" ></textarea>
+                    </div>
+                    <hr>
+                    <?php }
+                    } ?>
+                    <label class="text-center">Look</label>
+                    <div class="switch__container">
+                    <p>Masculino</p>
+                    <input id="masculino" class="switch switch--shadow" name="masculino" type="checkbox" value="1" >
+                    <label for="masculino"></label>
+                    </div>
+                    <div class="switch__container">
+                    <p>Feminino</p>
+                    <input id="feminino" class="switch switch--shadow" name="feminino" type="checkbox" value="1" >
+                    <label for="feminino"></label>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="name">Qual estilo?</label>
+                        <select class="form-control" name="usuEstilo" id="estilo" required>
+                            <?php while ($user = $usuarioAlbum->fetch(PDO::FETCH_ASSOC)): //LISTA NOME DOS ALBUNS ?>
+                                <?php $nomeAlbum = $user['album']; $idAlbum = $user['idAlbum'];?>
+                                <option value="<?php echo $nomeAlbum ?>"><?php echo $nomeAlbum ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <hr>
                     <div class="form-group">
                         <label for="marca">Publicar em qual página? </label>
-                        <?php while ($pagina = $stmt_pagina->fetch(PDO::FETCH_ASSOC)): //prepara o conteúdo para ser listado ?>
+                        <?php while ($pagina = $usuarioPagina->fetch(PDO::FETCH_ASSOC)): //prepara o conteúdo para ser listado ?>
                             <?php   $nomePagina = $pagina['nomePagina']; 
                             $idPagina = $pagina['idPagina'];
                             ?>
@@ -161,47 +172,7 @@ if ($corBotao == 1){
     </div>
 </div>
 </div>
-<div id="footer" data-animate="fadeInUp">
-   <div class="container">
-      <div class="row">
-         <div class="col-md-12">
-            <h4>extilos.com</h4>
-            <ul>
-               <li><a href="text.html">Termos de uso</a>
-               </li>
-               <li><a href="text.html">Sobre nós</a>
-               </li>
-               <li><a href="faq.html">Dicas e Sugestõs</a>
-               </li>
-               <li><a href="contact.html">Contato</a>
-               </li>
-           </ul>
-           <hr class="hidden-md hidden-lg hidden-sm">
-       </div>
-       <!-- /.col-md-3 -->
-       <div class="col-md-12">
-        <h4>Visite também</h4>
-        <p class="social">
-           <a href="#" class="facebook external" data-animate-hover="shake"><i class="fa fa-facebook"></i></a>
-           <a href="#" class="twitter external" data-animate-hover="shake"><i class="fa fa-twitter"></i></a>
-           <a href="#" class="instagram external" data-animate-hover="shake"><i class="fa fa-instagram"></i></a>
-           <a href="#" class="gplus external" data-animate-hover="shake"><i class="fa fa-google-plus"></i></a>
-           <a href="#" class="email external" data-animate-hover="shake"><i class="fa fa-envelope"></i></a>
-       </p>
-   </div>
-   <!-- /.col-md-3 -->
-</div>
-<!-- /.row -->
-</div>
-<!-- /.container -->
-</div>
-<div id="copyright">
-   <div class="container">
-      <div class="col-md-12">
-         <p class="pull-left">© 2018 eXtilos.com</p>
-     </div>
- </div>
-</div>
+
 <!-- *** COPYRIGHT END *** -->
 </div>
 <script src="js/jquery-1.11.0.min.js"></script>

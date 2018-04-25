@@ -1,22 +1,17 @@
 <?php
-echo '<div id="hot">';
-$idTorre = 0;
-$torres = torre($idTorre);
-echo $torres;
-echo '</div>';
-
 
 if (isset($_POST['torre'])){
-echo '<div class="box">';
 $idTorre = $_POST['torre'];
-$inicio = 1;
-$fim = 7;
+$qtd_post = $_POST['qtdpost'];
+
+$inicio = 0;
+$fim = $qtd_post;
 $albumImagemResposta = banco_inicio($idTorre, $inicio, $fim);
 ?>
 
 <div id="wishlist">
+
                         <?php while ($fotos = $albumImagemResposta->fetch(PDO::FETCH_ASSOC)): //prepara o conteúdo para ser listado ?>
-                        
                         <!-- INFORMAÇÃOE DO ALBUM -->
                         <div class="box slideshow">
                             <h4><?php echo $fotos['usuTitulo'] ?></h4>
@@ -73,13 +68,25 @@ $albumImagemResposta = banco_inicio($idTorre, $inicio, $fim);
     			<?php
                 if (isset($fotos)){
                     if (!isset($contaRegistro)){
-                       	echo 'Ocorreu algum erro durante o carregamento da torre selecionada, tente novamente. Caso o erro continue entre em contato com o suporte do site.';
+                       	echo '<p class="text-center">Esta torre não tem nenhuma postagem.</p>';
                     }else{
+                    if ($contaRegistro > $qtd_post){
+
                 ?>
 				<button class="btn btn-sm btn-block btn-default" id="ver" onclick="vermais(); this.style.display = 'none';">ver mais</button>
 				<div id="retorno"></div>
+                <?php 
+                $qtd_registro = $contaRegistro;
+                $inicio = $fim;
+                $final = $qtd_post;
+                ?>
+                <input type="hidden" id="inicio" name="inicio" value=<?php echo $inicio ?>>
+                <input type="hidden" id="final" name="final" value=<?php echo $final ?>>
+                <input type="hidden" id="idtorre" name="idtorre" value=<?php echo $idTorre ?>>
+                <input type="hidden" id="qtd" name="qtd" value=<?php echo $qtd_registro ?>>
 <?php
-						} //if $fotos
+						      }
+                        } //if $fotos
 				}// else
 
 			}// if POST['torre']
@@ -95,16 +102,18 @@ $albumImagemResposta = banco_inicio($idTorre, $inicio, $fim);
 ?>
  <script type="text/javascript">
                 function vermais(){
-                    var torre = 1;
-                    var inicio = 1;
-                    var fim = 7;
+                    var torre = $("#idtorre").val();
+                    var inicio = $("#inicio").val();
+                    var fim = $("#final").val();
+                    var qtd = $("#qtd").val();
                     $.ajax({
-                        url: 'include/inicioCarrega2.php',
+                        url: 'include/conteudos/conteudoTorre2.php',
                         type: 'POST',
                         data: {
                         		torre:torre,
                         		inicio:inicio,
-                        		fim:fim
+                        		fim:fim,
+                                qtd:qtd
                         		},
                         beforeSend: function(){
                             $("#retorno").html("Carregando...");

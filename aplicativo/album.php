@@ -3,7 +3,7 @@ ob_start();
 session_start();
 //VERIFICA SE USUÁRIO TEM ACESSO A PÁGINA
 if(!isset($_SESSION['idLogado']) && (!isset($_POST['emailUsuario']))){
-    $_SESSION['resp'] = 'negado';
+    $_SESSION['resposta'] = 'negado';
     header("Location: login.php"); exit;
 } 
 //INCLUI AS FUNÇÕES NECESSÁRIAS
@@ -51,7 +51,7 @@ $while = album_while($idLogado);
                     <a type="button" class="" data-toggle="modal" data-target="#modal-fotos">
                         <i class="pull-right fa fa-align-justify"></i></a>
                         <h4>Álbuns de fotos</h4>
-                        <p class="text-muted">Suas fotos são organizadas por estilo.</p>
+                        <p class="text-muted">Seus álbuns e postagens são organizadas por estilo.</p>
                         <?php
                         if(isset($_SESSION['resposta'])){
                             include_once 'include/resposta.php';
@@ -60,11 +60,11 @@ $while = album_while($idLogado);
                         <div class="col-sm-6 box">
                             <form action="cadastros/album.php" method="post" >
                                 <div class="form-group">
-                                    <label for="album">Crie o seu album, crie seu eXtilo.</label>
+                                    <label for="album">Novo estilo.</label>
                                     <input type="text" class="form-control" name="album" id="album" size="50">
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-lg btn-block btn-primary"> Criar álbum</button>
+                                    <button type="submit" class="btn btn-lg btn-block btn-primary"> Criar</button>
                                 </div>
                             </form>
                         </div>
@@ -73,26 +73,35 @@ $while = album_while($idLogado);
                             <table class="table">
                                 <thead>
                                     <tr>
-                                    <th colspan="2">Meus álbuns(<?php echo $total;?>)</th>
+                                    <th colspan="1">Qtd</th>
+                                    <th colspan="1">Estilos</th>
+                                    <th colspan="1"><?php echo $total;?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php while ($user = $while->fetch(PDO::FETCH_ASSOC)): //prepara o conteúdo para ser listado ?>
+                                    <form action="minhas-fotos.php" method="post">
+                                    <?php
+                                            $nomeAlbum = mb_strimwidth($user['album'], 0, 13,"..."); // carrega informações do album
+                                            $idAlbum = $user['idAlbum'];
+                                            $qtdPost = $user['qtd_post'];
+                                        ?>
                                         <tr>
                                             <td>
-                                               <img src="img/detailsquare.jpg" alt="White Blouse Armani">
+                                             ( <?php echo $qtdPost ?> )
                                            </td>
-                                           <?php
-                                        $nomeAlbum = $user['album']; // carrega informações do album
-                                        $idAlbum = $user['idAlbum'];
-                                        $idCrip = rand(100,999).$idAlbum.rand(1000,9999); //cria um numero randomico para esconder o id do album
-                                        $urlAlbum = "?id=".$idCrip."&alb=".$nomeAlbum // cria uma nova id para a url
 
-                                        ?>
-                                        <td><a href="minhas-fotos.php/<?php echo $urlAlbum ?>">
-                                            <?php echo $nomeAlbum ?></a>
+                                        <td>
+                                            <?php echo $nomeAlbum ?>
+
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="nomeAlbum" value=<?php echo $nomeAlbum ?>>
+                                            <input type="hidden" name="idAlbum" value=<?php echo $idAlbum ?>>
+                                            <input type="submit" class="btn btn-sm btn-block btn-default btn-primary" value="Editar"> </input>
                                         </td>
                                     </tr>
+                                    </form>
                                 <?php endwhile; ?>
                             </tbody>
                         </table>

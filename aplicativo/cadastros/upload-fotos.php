@@ -10,15 +10,23 @@ include_once 'caracteres-especiais.php';
 $idUsuario = $_SESSION['idLogado'];
 $idTorre = isset($_SESSION['idTorre']) ? $_SESSION['idTorre'] : null;
 // informações do formulário
-$usuEstilo = 	isset($_POST['usuEstilo']) 		? $_POST['usuEstilo'] : null;
-$usuTitulo= 	isset($_POST['usuTitulo']) 		? $_POST['usuTitulo'] : null;
-$usuMarca = 	isset($_POST['usuMarca']) 	? $_POST['usuMarca'] : null;
-$publicarTorre =  isset($_POST['torre'])    ? $_POST['torre'] : null;
+$usuEstilo = 	    isset($_POST['usuEstilo']) 	? $_POST['usuEstilo']   : null;
+$usuTitulo= 	    isset($_POST['usuTitulo']) 	? $_POST['usuTitulo']   : null;
+$usuMarca = 	    isset($_POST['usuMarca']) 	? $_POST['usuMarca']    : null;
+$publicarTorre =  isset($_POST['torre'])      ? $_POST['torre']       : null;
+$precPro =        isset($_POST['precPro'])    ? $_POST['precPro']     : null;
+$descPro =        isset($_POST['descPro'])    ? $_POST['descPro']     : null;
+$formaPro =       isset($_POST['formaPro'])   ? $_POST['formaPro']    : null;
+$infoPro =        isset($_POST['infoPro'])    ? $_POST['infoPro']     : null;
 //limpa as strings passadas via post
 $usuEstilo =  sanitizeString($usuEstilo);
 $usuTitulo=   sanitizeString($usuTitulo);
 $usuMarca =   sanitizeStringlight($usuMarca);
 $publicarTorre =  sanitizeString($publicarTorre);
+$precPro = sanitizeStringlight($precPro);
+$descPro = sanitizeStringlight($descPro);
+$formaPro = sanitizeString($formaPro);
+$infoPro = sanitizeStringlight($infoPro);
 // validação (bem simples, só pra evitar dados vazios)
 if (empty($usuEstilo) || empty($usuTitulo) )
 {
@@ -34,10 +42,15 @@ if(isset($_FILES['imagem']))
       	$name  = $_FILES['imagem']['name']; //Atribui uma array com os nomes dos arquivos à variável
       	$tmp_name = $_FILES['imagem']['tmp_name']; //Atribui uma array com os nomes temporários dos arquivos à variável
       	//$tamanho = $_FILES['imagem']['size'];
+        $exif = exif_read_data($_FILES['imagem']['tmp_name']);
+
       $allowedExts = array(".gif", ".jpeg", ".jpg", ".png", ".bmp"); //Extensões permitidas
       $dir = '../imagem/';
       for($i = 0; $i < count($tmp_name); $i++){ //passa por todos os arquivos
        $ext = strtolower(substr($name[$i],-4));
+       $exif = exif_read_data($tmp_name[$i]);
+
+
          if(in_array($ext, $allowedExts)) //Pergunta se a extensão do arquivo, está presente no array das extensões permitidas
          {
          	if ($_FILES['imagem']['size'][$i] > 0 )
@@ -45,6 +58,19 @@ if(isset($_FILES['imagem']))
            $new_name = date("YmdHis") .uniqid(). $ext;
 
         		$image = WideImage::load($tmp_name[$i]); //Carrega a imagem utilizando a WideImage
+            if(!empty($exif['Orientation'])) {
+            switch($exif['Orientation']) {
+                case 8:
+                    $image = imagerotate($image,90,0);
+                    break;
+                case 3:
+                    $image = imagerotate($image,180,0);
+                    break;
+                case 6:
+                    $image = imagerotate($image,-90,0);
+                    break;
+            }
+        }
 
         		$image = $image->resize(500, 700, 'outside'); //Redimensiona a imagem para 170 de largura e 180 de altura, mantendo sua proporção no máximo possível
         		$image = $image->crop('center', 'center', 500, 700); //Corta a imagem do centro, forçando sua altura e largura
@@ -74,7 +100,7 @@ if(isset($_FILES['imagem']))
 
 // insere no banco
                       $PDO = db_connect();
-                      $sql = "INSERT INTO img_usuarios(idUsuario, usuEstilo, usuTitulo, usuMarca, img, img1, img2, img3, img4, publicarTorre, idTorre) VALUES(:idUsuario, :usuEstilo, :usuTitulo, :usuMarca, :img, :img1, :img2, :img3, :img4, :publicarTorre, :idTorre)";
+                      $sql = "INSERT INTO img_usuarios(idUsuario, usuEstilo, usuTitulo, usuMarca, img, img1, img2, img3, img4, publicarTorre, idTorre, precPro, descPro, formaPro, infoPro) VALUES(:idUsuario, :usuEstilo, :usuTitulo, :usuMarca, :img, :img1, :img2, :img3, :img4, :publicarTorre, :idTorre, :precPro, :descPro, :formaPro, :infoPro)";
                       $stmt = $PDO->prepare($sql);
 
                       $stmt->bindParam(':idUsuario', $idUsuario);
@@ -88,6 +114,10 @@ if(isset($_FILES['imagem']))
                       $stmt->bindParam(':img4', $img4);
                       $stmt->bindParam(':publicarTorre', $publicarTorre);
                       $stmt->bindParam(':idTorre', $idTorre);
+                      $stmt->bindParam(':precPro', $precPro);
+                      $stmt->bindParam(':descPro', $descPro);
+                      $stmt->bindParam(':formaPro', $formaPro);
+                      $stmt->bindParam(':infoPro', $infoPro);
 
                       if ($stmt->execute())
                       {
@@ -155,7 +185,7 @@ if(isset($_FILES['imagem']))
                           {
                           }else{
                             $_SESSION['resposta'] = 'alb_erro_hash';
-                            header('Location: /aplicativo/enviar-fotos.php');
+                            header('Location: foto.php');
                             exit;
                           }
                         }
@@ -175,14 +205,14 @@ if(isset($_FILES['imagem']))
                           {
                           }else{
                             $_SESSION['resposta'] = 'alb_erro_arroba';
-                            header('Location: /aplicativo/enviar-fotos.php');
+                            header('Location: ../foto.php');
                             exit;
                           }
                         }
-                       header('Location: /aplicativo/enviar-fotos.php');
+                       header('Location: ../foto.php');
                       }
                       else
                       {
                        $_SESSION['resposta'] = 'alb_erro';
-                        header('Location: /aplicativo/enviar-fotos.php');
+                       // header('Location: ../foto.php');
                      }

@@ -149,9 +149,6 @@ session_start();
     <script src="js/bootstrap-hover-dropdown.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/front.js"></script>
-    <script src="scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
-    <script src="scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
-    <?php include_once 'functions/functions.php'; ?>
     <script type="text/javascript">
           $(document).ready(function(){
                 //faz verificação de página no banco de dados
@@ -159,7 +156,7 @@ session_start();
                     var url = $("#informaemail").val();
 
                     $.ajax({
-                        url: 'include/buscalogin.php',
+                        url: 'functions/buscalogin.php',
                         type: 'POST',
                         data: {urlParaMontar:url},
                         beforeSend: function(){

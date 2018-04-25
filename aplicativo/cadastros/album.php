@@ -7,6 +7,7 @@ include_once 'caracteres-especiais.php';
 $dataAlbum = date("Y-m-d");
 $idUsuario = $_SESSION['idLogado'];
 $album = isset($_POST['album']) ? $_POST['album'] : null;
+$qtd_post = 0;
 
 //limpa a string de caracteres especiais
 $idUsuario = sanitizeString($idUsuario);
@@ -17,27 +18,25 @@ if (empty($album))
 {
 	$_SESSION['resposta'] = 'alb_nome_negado';
 	//$_SESSION['n'] = $_POST['nomeUsuario'];
-   	header("Location: /aplicativo/albuns-foto.php");
+   	header("Location: albuns.php");
     exit;
 }
 
 // insere no banco
 $PDO = db_connect();
-$sql = "INSERT INTO album_usuarios(idUsuario, album, dataAlbum) VALUES(:idUsuario, :album, :dataAlbum)";
+$sql = "INSERT INTO album_usuarios(idUsuario, album, dataAlbum, qtd_post) VALUES(:idUsuario, :album, :dataAlbum, :qtd_post)";
 $stmt = $PDO->prepare($sql);
 $stmt->bindParam(':idUsuario', $idUsuario);
 $stmt->bindParam(':album', $album);
 $stmt->bindParam(':dataAlbum', $dataAlbum);
+$stmt->bindParam(':qtd_post', $qtd_post);
 
 
-
- 
- 
 if ($stmt->execute())
 {
 	//$_SESSION['e'] = $_POST['emailUsuBasico'];
-	$_SESSION['resp'] = 'alb_nome_criado';
-   header('Location: /aplicativo/albuns-foto.php');
+	$_SESSION['resposta'] = 'alb_nome_criado';
+   header('Location: ../album.php');
 }
 else
 {
