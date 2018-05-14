@@ -34,4 +34,6 @@ function sanitizeStringlight($string) {
     $retorno = implode(" ", $separaPalavras);
     return $retorno;
 }
+
+
 ?>

@@ -115,6 +115,9 @@
 }
 .foto img{
         max-height:300px;
+        -ms-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
       }
       input[type='file'] {
         display: none

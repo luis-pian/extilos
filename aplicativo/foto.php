@@ -67,7 +67,6 @@ include_once 'include/modal.php';
               <h4>Publicar contúdo</h4>
               <p class="text-muted">Carregue até 5 fotos.</p>
               <?php
-              echo $_SESSION['resposta'];
               if(isset($_SESSION['imagem'])){
                 include_once 'include/resposta.php';
             }

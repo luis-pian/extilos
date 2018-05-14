@@ -42,14 +42,12 @@ if(isset($_FILES['imagem']))
       	$name  = $_FILES['imagem']['name']; //Atribui uma array com os nomes dos arquivos à variável
       	$tmp_name = $_FILES['imagem']['tmp_name']; //Atribui uma array com os nomes temporários dos arquivos à variável
       	//$tamanho = $_FILES['imagem']['size'];
-        $exif = exif_read_data($_FILES['imagem']['tmp_name']);
+        //$exif = exif_read_data($_FILES['imagem']['tmp_name']);
 
       $allowedExts = array(".gif", ".jpeg", ".jpg", ".png", ".bmp"); //Extensões permitidas
       $dir = '../imagem/';
       for($i = 0; $i < count($tmp_name); $i++){ //passa por todos os arquivos
        $ext = strtolower(substr($name[$i],-4));
-       $exif = exif_read_data($tmp_name[$i]);
-
 
          if(in_array($ext, $allowedExts)) //Pergunta se a extensão do arquivo, está presente no array das extensões permitidas
          {
@@ -57,21 +55,25 @@ if(isset($_FILES['imagem']))
           {
            $new_name = date("YmdHis") .uniqid(). $ext;
 
-        		$image = WideImage::load($tmp_name[$i]); //Carrega a imagem utilizando a WideImage
+           $exif = exif_read_data($tmp_name[$i]);
             if(!empty($exif['Orientation'])) {
-            switch($exif['Orientation']) {
-                case 8:
-                    $image = imagerotate($image,90,0);
-                    break;
-                case 3:
-                    $image = imagerotate($image,180,0);
-                    break;
-                case 6:
-                    $image = imagerotate($image,-90,0);
-                    break;
-            }
-        }
+              switch($exif['Orientation']) {
+                  case 8:
+                      $image = imagerotate($image,90,0);
+                      break;
+                  case 3:
+                      $image = imagerotate($image,180,0);
+                      break;
+                  case 6:
+                      $image = imagerotate($image,-90,0);
+                      break;
+              }
+          }else{
+            $image = $tmp_name[$i];
+          }
 
+        		$image = WideImage::load($image); //Carrega a imagem utilizando a WideImage
+           
         		$image = $image->resize(500, 700, 'outside'); //Redimensiona a imagem para 170 de largura e 180 de altura, mantendo sua proporção no máximo possível
         		$image = $image->crop('center', 'center', 500, 700); //Corta a imagem do centro, forçando sua altura e largura
 
