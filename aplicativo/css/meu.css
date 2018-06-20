@@ -4,14 +4,17 @@
   padding: 20px;
   border-top: solid 1px #eeeeee;
 }
-
 .switch__container {
   margin: 1px;
   width: auto;
   height: 25px;
   position: relative;
 }
-
+.veja p:hover {
+  text-decoration: underline;
+  color: #589;
+  cursor:pointer;
+}
 .switch {
   visibility: hidden;
   position: relative;
@@ -26,7 +29,13 @@
   top: 2px;
 
 }
+.switch__container small{
+  position: absolute;
+  left: 80px;
+  height: auto;
+  top: 2px;
 
+}
 .switch + label {
   display: block;
   position: absolute;
@@ -113,11 +122,51 @@
   margin-left: 36px;
   background-color: #8ce196;
 }
+.torre img{
+        max-height:100px;
+        max-width: 500px;
+        border-radius: 5px;
+        float: center;
+      }
+.torre p{
+    margin-top: 5px;
+}
+.torre small{
+  margin-top: -20px;
+    float: left;
+}
+.torre input{
+  border-radius: 5px;
+  background-color: #282828; /*cor # 282828*/
+  margin: 10px;
+  margin-left: 0px;
+}
+.pesquisa input:hover{
+  background-color: #9fc4c1;
+}
+.pesquisa input{
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 10px;
+  margin-left: 0px;
+}
+.torre input:hover{
+  color: #fff;
+  background-color: #4f4f4f
+}
+.torre input{
+  color: #fff;
+  font-size: 14px;
+}
+.fotoCapa img{
+  text-align: center;
+}
 .foto img{
-        max-height:300px;
-        -ms-transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
+        max-height:100px;
+        max-width: 100px;
+        border-radius: 5px;
+        margin: 10px;
+        float: left;
       }
       input[type='file'] {
         display: none

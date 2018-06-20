@@ -34,6 +34,40 @@ function sanitizeStringlight($string) {
     $retorno = implode(" ", $separaPalavras);
     return $retorno;
 }
+function sanitizeStringTexto($string) {
 
+    // matriz de entrada
+    $what = array( '>','<','[',']','=','*' );
+
+    // matriz de saída
+    $by   = array( '_','_','_','_','_','_' );
+
+    // devolver a string
+    $retorno = str_replace($what, $by, $string);
+    $separaPalavras = preg_split('/ /', $retorno, -1);
+    $contaPalavras = count($separaPalavras);
+    for ($r=0 ; $r<$contaPalavras ; $r++ ){
+        $contaLetras = strlen($separaPalavras[$r]);
+            if($contaLetras > 20){
+                $separaPalavras[$r] = mb_strimwidth($separaPalavras[$r], 0, 20).'...';
+            }
+    }
+    $retorno = implode(" ", $separaPalavras);
+    return $retorno;
+}
+
+function palavraCurta($string){
+   $contaLetras = strlen($string);
+    if($contaLetras > 30)
+        {
+            $contaLetras = mb_strimwidth($string, 0, 30).'...';
+        }
+    else
+        {
+            $contaLetras = $string;
+        }
+    
+    return $contaLetras;
+}
 
 ?>

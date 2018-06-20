@@ -33,57 +33,66 @@ if (empty($usuEstilo) || empty($usuTitulo) )
 	echo "Preencha os campos obrigatórios.";
 	exit;
 }
+
 //print_r($_FILES['imagem']['error']);
 if(isset($_FILES['imagem']))
 {
       require ('../include/lib/WideImage.php'); //Inclui classe WideImage à página
       date_default_timezone_set("Brazil/East");
-      $maxSize	= 1024 * 1024 * 5;
+      //$maxSize	= 1024 * 1024 * 10;
       	$name  = $_FILES['imagem']['name']; //Atribui uma array com os nomes dos arquivos à variável
       	$tmp_name = $_FILES['imagem']['tmp_name']; //Atribui uma array com os nomes temporários dos arquivos à variável
       	//$tamanho = $_FILES['imagem']['size'];
         //$exif = exif_read_data($_FILES['imagem']['tmp_name']);
-
+//print_r($tmp_name);
       $allowedExts = array(".gif", ".jpeg", ".jpg", ".png", ".bmp"); //Extensões permitidas
-      $dir = '../imagem/';
+      $grande = '../imagem/grande/';
+      $media = '../imagem/media/';
+      $mini = '../imagem/mini/';
       for($i = 0; $i < count($tmp_name); $i++){ //passa por todos os arquivos
        $ext = strtolower(substr($name[$i],-4));
-
+       //faz o tratamento caso a extesão do arquivo seja jpeg, por causa da quantidade de caracteres
+       if ($ext == 'jpeg'){
+        $ext = ".jpeg";
+       }
          if(in_array($ext, $allowedExts)) //Pergunta se a extensão do arquivo, está presente no array das extensões permitidas
          {
          	if ($_FILES['imagem']['size'][$i] > 0 )
           {
            $new_name = date("YmdHis") .uniqid(). $ext;
-
            $exif = exif_read_data($tmp_name[$i]);
-            if(!empty($exif['Orientation'])) {
-              switch($exif['Orientation']) {
-                  case 8:
-                      $image = imagerotate($image,90,0);
-                      break;
-                  case 3:
-                      $image = imagerotate($image,180,0);
-                      break;
-                  case 6:
-                      $image = imagerotate($image,-90,0);
-                      break;
-              }
-          }else{
-            $image = $tmp_name[$i];
-          }
+           $orientation = (isset($exif['Orientation'])) ? $exif['Orientation'] : null;
 
-        		$image = WideImage::load($image); //Carrega a imagem utilizando a WideImage
-           
-        		$image = $image->resize(500, 700, 'outside'); //Redimensiona a imagem para 170 de largura e 180 de altura, mantendo sua proporção no máximo possível
-        		$image = $image->crop('center', 'center', 500, 700); //Corta a imagem do centro, forçando sua altura e largura
 
-        		$image->saveToFile($dir.$new_name); //Salva a imagem
+        		$image = WideImage::load($tmp_name[$i]); //Carrega a imagem utilizando a WideImage
 
+            if($orientation == 6){
+              $image = $image->rotate(90,0);
+            }
+            if($orientation == 3){
+              $image = $image->rotate(180,0);
+            }
+            if($orientation == 8){
+              $image = $image->rotate(270,0);
+            }
+            //IMAGEM GRANDE
+        		$image = $image->resize(800, 1000, 'inside'); //Redimensiona a imagem para 170 de largura e 180 de altura
+        		//$image = $image->crop('center', 'center', 800, 1000); //Corta a imagem do centro, forçando sua altura e largura
+        		$image->saveToFile($grande.$new_name); //Salva a imagem
+            //IMAGEM GRANDE
+            $image = $image->resize(500, 700, 'inside'); //Redimensiona a imagem para 170 de largura e 180 de altura
+            //$image = $image->crop('center', 'center', 500, 700); //Corta a imagem do centro, forçando sua altura e largura
+            $image->saveToFile($media.$new_name); //Salva a imagem
+            //IMAGEM GRANDE
+            $image = $image->resize(200, 300, 'inside'); //Redimensiona a imagem para 170 de largura e 180 de altura
+            //$image = $image->crop('center', 'center', 200, 300); //Corta a imagem do centro, forçando sua altura e largura
+            $image->saveToFile($mini.$new_name); //Salva a imagem
+
+            //echo $image;
             $str[] = $new_name;
 
             $_SESSION['resposta'] = 'alb_publicado';
 
-            
           }
           else
           {
@@ -94,6 +103,7 @@ if(isset($_FILES['imagem']))
 
      }
   }
+
    $img =   isset($str[0]) 	? $str[0] : null;
    $img1 =  isset($str[1]) 	? $str[1] : null;
    $img2 =  isset($str[2]) 	? $str[2] : null;

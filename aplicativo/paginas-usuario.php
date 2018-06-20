@@ -61,81 +61,19 @@ if ($corBotao == 1){
 </head>
 
 <body>
-    <!-- *** TOPBAR ***
- _________________________________________________________ -->
-
-
-    <!-- *** TOP BAR END *** -->
-
-    <!-- *** NAVBAR ***
- _________________________________________________________ -->
-
-    <!-- /#navbar -->
-
-    <!-- *** NAVBAR END *** -->
-
     <div id="all">
-
         <div id="content">
             <div class="container box">
-            	<div class="navbar-header">
-                <a class="navbar-brand home" href="index.html" data-animate-hover="bounce">
-                    <img src="imagem/extilos_preto.png" alt="eXtilos.com" class="img-responsive">
-
-                    <div class="navbar-buttons">
-                        <div class="col-md-6" data-animate="fadeInDown">
-                            <a type="button" class="navbar-toggle" data-toggle="modal" data-target="#login-modal">
-                                <span class="sr-only">Toggle navigation</span>
-                                <i class="fa fa-align-justify"></i>
-                            </a>
-                        </div>
-                        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
-                            <div class="modal-dialog modal-sm">
-
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="Login">Painel de Acessos</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <?php include 'include/painel-fotos.php'  ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="col-md-9" id="customer-order">
-                    <div class="">
-                        <h3>Página de Postagens</h3>
-                        <p class="text-muted">Lista de páginas que você participa e administra. </p>
+                <div class="" id="customer-order">
+                        <a type="button" class="" data-toggle="modal" data-target="#modal-cadastro">
+                        <i class="pull-right fa fa-align-justify"></i></a>
+                        <h4>Novo Blog</h4>
+                        <p class="text-muted">Cadastro básico.</p>
                         <?php
-                                  if(isset($_SESSION['resp']))
-                                    {
-                                     if($_SESSION['resp'] == 'sucesso')
-                                         {
-                                            echo '
-                                            <div class="alert">
-                                               <button type="button" class="close" data-dismiss="alert">×</button>
-                                               <p class="text-muted" ><b><font color="00691c">Legal!</b> Sua página foi criada.</font></p>
-                                           </div>
-                                           ';
-                                           unset($_SESSION['resp']);
-
-                                        }
-                                    elseif($_SESSION['resp'] == 'alerta')
-                                        {
-                                            echo '
-                                            <div class="alert">
-                                             <button type="button" class="close" data-dismiss="alert">×</button>
-                                             <p class="text-muted" ><b><font color="00691c">Atenção!</b> Publicamos seu eXtilo, porém deixamos de carregar alguma(s) foto(s) por causa do tamanho do arquivo. <a>Saiba Mais</a></font></p>
-                                         </div>
-                                         ';
-                                         unset($_SESSION['resp']);
-                                        }
-                                    }
-                                ?>
+                        if (isset($_SESSION['resposta'])){
+                          include "include/resposta.php";
+                      }
+                      ?>
                         <hr>
 
                         <div class="table-responsive">
@@ -163,7 +101,7 @@ if ($corBotao == 1){
                                         <?php echo $nomePagina ?>
                                         </td>
                                         <td align="center">
-                                        <a href="editar-pagina.php/<?php echo $urlPagina ?>">
+                                        <a href="pagina.php">
                                         Editar</a>
                                         </td>
                                     </tr>
@@ -171,84 +109,11 @@ if ($corBotao == 1){
                                 </tbody>
                             </table>
                         </div>
-                        <!-- /.table-responsive -->
-                        </div>
-
                     </div>
                 </div>
 
             </div>
-            <!-- /.container -->
         </div>
-        <!-- /#content -->
-
-
-                <!-- *** FOOTER ***
-        _________________________________________________________ -->
-        <div id="footer" data-animate="fadeInUp">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4>extilos.com</h4>
-                        <ul>
-                            <li><a href="text.html">Termos de uso</a>
-                            </li>
-                            <li><a href="text.html">Sobre nós</a>
-                            </li>
-                            <li><a href="faq.html">Dicas e Sugestõs</a>
-                            </li>
-                            <li><a href="contact.html">Contato</a>
-                            </li>
-                        </ul>
-                        <hr class="hidden-md hidden-lg hidden-sm">
-                    </div>
-                    <!-- /.col-md-3 -->
-                    <div class="col-md-12">
-                        <h4>Visite também</h4>
-                        <p class="social">
-                            <a href="#" class="facebook external" data-animate-hover="shake"><i class="fa fa-facebook"></i></a>
-                            <a href="#" class="twitter external" data-animate-hover="shake"><i class="fa fa-twitter"></i></a>
-                            <a href="#" class="instagram external" data-animate-hover="shake"><i class="fa fa-instagram"></i></a>
-                            <a href="#" class="gplus external" data-animate-hover="shake"><i class="fa fa-google-plus"></i></a>
-                            <a href="#" class="email external" data-animate-hover="shake"><i class="fa fa-envelope"></i></a>
-                        </p>
-                    </div>
-                    <!-- /.col-md-3 -->
-                </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container -->
-        </div>
-        <!-- /#footer -->
-        <!-- *** FOOTER END *** -->
-        <!-- *** COPYRIGHT ***
-        _________________________________________________________ -->
-        <div id="copyright">
-            <div class="container">
-                <div class="col-md-12">
-                    <p class="pull-left">© 2018 eXtilos.com</p>
-                </div>
-            </div>
-        </div>
-        <!-- *** COPYRIGHT END *** -->
-    </div>
-
-    <!-- *** SCRIPTS TO INCLUDE ***
-     <tfoot>
-                                    <tr>
-                                        <th colspan="5" class="text-right">Total já faturado nas postagens.</th>
-                                        <th>$446.00</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="5" class="text-right">Quantidade de propagandas realizadas</th>
-                                        <th>25</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="5" class="text-right">Custo médio da publicidade em sua página. (por dia)</th>
-                                        <th>R$0,55</th>
-                                    </tr>
-                                </tfoot>
- _________________________________________________________ -->
     <script src="js/jquery-1.11.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.cookie.js"></script>

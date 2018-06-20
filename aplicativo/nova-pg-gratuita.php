@@ -49,8 +49,8 @@ include_once 'include/modal.php';
                 <div class="" id="customer-order">
                     <a type="button" class="" data-toggle="modal" data-target="#modal-cadastro">
                         <i class="pull-right fa fa-align-justify"></i></a>
-                        <h4>Cadastro básico</h4>
-                        <p class="text-muted">Página de postagens gratuíta.</p>
+                        <h4>Novo Blog</h4>
+                        <p class="text-muted">Cadastro básico.</p>
                         <?php
                         if (isset($_SESSION['resposta'])){
                           include "include/resposta.php";
@@ -60,12 +60,12 @@ include_once 'include/modal.php';
                         <div class='input-wrapper'>
                             <hr>
                             <div class="form-group">
-                                <div id="resultado">Nome da Página</div> 
-                                <input type="text" class="form-control" name="pagina" id="pagina" placeholder="Ex: minha_pagina" pattern="[a-z\s]+$" required>
+                                <div id="resultado">Nome do Blog</div> 
+                                <input type="text" class="form-control" name="pagina" id="pagina" placeholder="Ex: minha_pagina" pattern="[a-zA-Z0-9]+" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="marca">Sobre a Página </label>
+                                <label for="marca">Breve Apresentação</label>
                                 <textarea type="text" class="form-control" name="descPagina" id="descPagina" placeholder="" rows="3"></textarea>
                             </div>
                             <div class ="form-group">
@@ -85,7 +85,7 @@ include_once 'include/modal.php';
                                 <input type="text" class="form-control" name="emailPagina" id="emailPagina" required>
                             </div>
                             <hr>
-                            <input type="submit" class="btn btn-lg btn-block btn-primary" name='criarPagina' id="criarPagina" value="CRIAR PÁGINA" disabled="true">
+                            <input type="submit" class="btn btn-lg btn-block btn-primary" name='criarPagina' id="criarPagina" value="CRIAR BLOG" disabled="true">
                             <hr>
                         </div>
                     </form>
@@ -165,7 +165,7 @@ include_once 'include/modal.php';
     <script type="text/javascript">
         $(document).ready(function () {
         
-            $.getJSON('/extilos/aplicativo/script/estados_cidades.json', function (data) {
+            $.getJSON('script/estados_cidades.json', function (data) {
                 var items = [];
                 var options = '<option value="">escolha um estado</option>';    
                 $.each(data, function (key, val) {

@@ -16,18 +16,18 @@ $("#upload_file").on('change', function () {
     			if (typeof (FileReader) != "undefined") {
 
     				for (var i = 0; i < countFiles; i++) {
-
-    					var reader = new FileReader();
-    					reader.onload = function (e) {
-    						$("<img />", {
-    							"src": e.target.result,
-    							"class": "box col-sm-2 img-responsive"
-    						}).appendTo(image_holder);
-    					}
-
-    					image_holder.show();
-    					reader.readAsDataURL($(this)[0].files[i]);
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                      $(
+                        "<img />",{
+                        "src": e.target.result,
+                        "class": "img-responsive"
+                      }).appendTo(image_holder);
+                      image_holder.show();
+                    }
+                    reader.readAsDataURL($(this)[0].files[i]);
     					document.getElementById('qtde_preview').innerHTML = '<p>'+countFiles+' arquivo(s) selecionado(s)</p>';
+
     				}
 
     			} else {
@@ -37,6 +37,7 @@ $("#upload_file").on('change', function () {
     			alert("Selecione uma foto");
     		}
     	});
+//teste de exibição
 
 //script para fazer consulta de # e @ no banco de dados
 $(document).ready(function(){
@@ -55,7 +56,7 @@ $(document).ready(function(){
                         }
                     })
                 });
-                
+
             });
 
 

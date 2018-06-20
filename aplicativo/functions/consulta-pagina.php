@@ -17,7 +17,7 @@ $PDO = db_connect();
 	if ($contaLetras < 3){
 			echo '
 			<div class="span4">
-			Nome da Página:
+			Nome:
 			<b style="color:#ff9d00">'.$nomePagina.' | Alerta! Você precisa usar no mínimo 3 letras.</b>
 			<script>document.getElementById("criarPagina").disabled = true;</script>
 			<script>document.getElementById("pagSeguro").disabled = true;</script>
@@ -26,7 +26,7 @@ $PDO = db_connect();
 	if($verificaPalavra > 4){
 			echo '
 			<div class="span4">
-			Nome da Página:
+			Nome:
 			<b style="color:#ff9d00">'.$nomePagina.' | Alerta! Só é possível usar 4 separadores "_" você usou: '. $verificaPalavra.', tente escrever de outra forma</b>
 			<script>document.getElementById("criarPagina").disabled = true;</script>
 			<script>document.getElementById("pagSeguro").disabled = true;</script>
@@ -36,7 +36,7 @@ $PDO = db_connect();
 	if ($conta < 3){
 		echo '
 			<div class="span4">
-			Nome da Página:
+			Nome:
 			<b style="color:#ff9d00">'.$nomePagina.' | Alerta! Nome minimo com 3 letras</b>
 			<script>document.getElementById("criarPagina").disabled = true;</script>
 			<script>document.getElementById("pagSeguro").disabled = true;</script>
@@ -50,7 +50,7 @@ $PDO = db_connect();
 				if ($nomePagina == $paginaResposta['nomePagina']){
 					echo '
 					<div class="span4">
-					Nome da Página:
+					Nome:
 					<b style="color:#FF0000">'.$nomePagina.' | Ops! Nome Indisponível</b>
 					<script>document.getElementById("criarPagina").disabled = true;</script>
 					<script>document.getElementById("pagSeguro").disabled = true;</script>
@@ -58,7 +58,7 @@ $PDO = db_connect();
 				}else{
 									echo '
 							            <div class="span4">
-							            Nome da Página:
+							            Nome:
 								        	<b style="color:#228B22">'.$nomePagina.' | Legal! Nome Disponível</b>
 								        	<input type=hidden name="nomePagina" value="'.$nomePagina.'">
 								        	<script>document.getElementById("criarPagina").disabled = false;</script>

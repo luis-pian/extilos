@@ -83,10 +83,12 @@ include_once 'include/modal.php';
                         <div id="resultadohashPag"></div>
                     </div>
                     <label for='upload_file' class="upload">Selecionar fotos</label>
-                    <input type="file" id="upload_file" name="imagem[]" onchange="preview_image();" multiple size="5" class="upload_file" accept="image/jpeg, image/png, image/jpg,"/>
+                    <input type="file" id="upload_file" name="imagem[]"  multiple size="5" class="upload_file" accept="image/jpeg, image/png, image/jpg,"/>
                     <input id='upload_file' type='file' value='' />
                     <span id='file-name'></span>
                     <div class="foto" id="qtde_preview"></div>
+
+                    <div id="container"></div>
                     <hr>
                     <?php if(isset($_SESSION['usuProf'])){
                         if($_SESSION['usuProf'] == 'sim'){
@@ -131,13 +133,13 @@ include_once 'include/modal.php';
                         <select class="form-control" name="usuEstilo" id="estilo" required>
                             <?php while ($user = $usuarioAlbum->fetch(PDO::FETCH_ASSOC)): //LISTA NOME DOS ALBUNS ?>
                                 <?php $nomeAlbum = $user['album']; $idAlbum = $user['idAlbum'];?>
-                                <option value="<?php echo $nomeAlbum ?>"><?php echo $nomeAlbum ?></option>
+                                <option value="<?php echo $idAlbum ?>"><?php echo $nomeAlbum ?></option>
                             <?php endwhile; ?>
                         </select>
                     </div>
                     <hr>
                     <div class="form-group">
-                        <label for="marca">Publicar em qual página? </label>
+                        <label for="marca">Publicar em qual blog? </label>
                         <?php while ($pagina = $usuarioPagina->fetch(PDO::FETCH_ASSOC)): //prepara o conteúdo para ser listado ?>
                             <?php   $nomePagina = $pagina['nomePagina']; 
                             $idPagina = $pagina['idPagina'];
@@ -162,8 +164,13 @@ include_once 'include/modal.php';
                     <hr>
                     <input type="submit" class="btn btn-lg btn-block btn-primary" name='submit_image' value="PUBLICAR">
                     <hr>
-                    <div class="foto" id="image_preview"><font color="cccccc">Nenhuma foto foi selecionada </font></div>
+                    <small><font color="cccccc">Obs. Se nesta visualização as fotos estiverem invertidas, elas serão ajustadas quando publicadas.</font></small>
+                        <div class="foto" id="image_preview"><font color="cccccc">Nenhuma foto foi selecionada </font></div>
+
+
+                    </div>
                 </div>
+              
             </form>
         </div>
         <!-- CONTEÚDO DA PÁGINA -->

@@ -100,6 +100,7 @@ $albumImagemResposta = banco_imagem($idAlbum);
                                     <?php  } ?>
                             </div>
                             <!-- FOTOS DO ALBUM -->
+                            <?php if(isset($fotos['img'])){ ?>
                             <div class="owl-carousel owl-theme product-slider">
                                 <?php
                                 $foto0 = isset($fotos['img']) ? $fotos['img'] : null;
@@ -115,7 +116,7 @@ $albumImagemResposta = banco_imagem($idAlbum);
                                         ?>
                                         <div class="">
                                             <a href="#">
-                                               <img src="imagem/<?php echo $quantasFotos[$g] ?>" alt="" class="img-responsive">
+                                               <img src="imagem/media/<?php echo $quantasFotos[$g] ?>" alt="" class="img-responsive">
                                            </a>
                                        </div>
                                        <?php
@@ -123,6 +124,7 @@ $albumImagemResposta = banco_imagem($idAlbum);
                                }
                                ?>
                             </div>
+                            <?php } ?>
                         </div>
                         <?php endwhile; ?>
                     </div>

@@ -73,9 +73,9 @@ $while = album_while($idLogado);
                             <table class="table">
                                 <thead>
                                     <tr>
-                                    <th colspan="1">Qtd</th>
+                                    <th colspan="1">Post</th>
                                     <th colspan="1">Estilos</th>
-                                    <th colspan="1"><?php echo $total;?></th>
+                                    <th colspan="1">total: <?php echo $total;?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -84,7 +84,8 @@ $while = album_while($idLogado);
                                     <?php
                                             $nomeAlbum = mb_strimwidth($user['album'], 0, 13,"..."); // carrega informações do album
                                             $idAlbum = $user['idAlbum'];
-                                            $qtdPost = $user['qtd_post'];
+                                            $total_post = conta_album($idAlbum);
+                                            $qtdPost = $total_post;
                                         ?>
                                         <tr>
                                             <td>

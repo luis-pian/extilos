@@ -33,10 +33,10 @@ $stmt->bindParam(':emailPagina', $emailPagina);
 if ($stmt->execute())
 {
 	$_SESSION['resposta'] = 'npg_criada';
-    header('Location: /aplicativo/paginas-usuario.php');
+    header('Location: ../paginas-usuario.php');
 }
 else
 {
     $_SESSION['resposta'] = 'npg_erro';
-    header('Location: /aplicativo/nova-pg-gratuita.php');
+    header('Location: ../nova-pg-gratuita.php');
 }

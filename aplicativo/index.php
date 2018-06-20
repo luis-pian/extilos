@@ -5,23 +5,23 @@ session_start();
 include_once 'functions/iniciar.php';
 include_once 'functions/functions.php';
 include_once 'functions/conexoes.php';
+include_once 'cadastros/caracteres-especiais.php';
 include'include/conteudos/topoHtml.php';
 
 ?>
 <div id="all">
-            <div id="content">
-                <div class="container-full box">
-<?php
-
-if(isset($_SESSION['idLogado']) && (isset($_POST['emailUsuario']))){
-// USUÁRIOS LOGADOS VAI CARREGAR CONTEÚDO DE ACORDO COM AS SUAS PREFERENCIAS
-
-}else{
-// USUÁRIOS VISITANTES
-$preferencia = "Moderno";
-$torre = busca_torre($preferencia);
-?>
-			<div id="hot">
+    <div id="content">
+        <div class="container-full box">
+<!-- SELECIONE A TORRE QUE DESEJA EXIBIR -->
+				<?php
+				if(isset($_SESSION['idLogado']) && (isset($_POST['emailUsuario']))){
+				// Se usuário estiver logado, carregar torres com base em sua preferência
+				}else{
+				// Se usuário é visitante, carregar aleatóriamente ou o que ele selecionar na busca.
+				$preferencia = "Moderno";
+				$torre = busca_torre($preferencia);
+				?>
+				<div id="hot">
 				<div class="container-full">
                     <div class="product-slider">
                     <?php while ($resultado_torre = $torre->fetch(PDO::FETCH_ASSOC)): //prepara o conteúdo para ser listado ?>
@@ -30,7 +30,7 @@ $torre = busca_torre($preferencia);
 		                            <div class="product">
 		                                <img src="img/main-slider1.jpg" alt="" class="img-responsive">
 		                                <div class="text">
-		                                    <h4>♜ | <?php echo $resultado_torre['nomeTorre'] ?></h4>
+		                                    <h4>♜ | <?php $result = palavracurta($resultado_torre['nomeTorre']); echo $result ?></h4>
 		                                    <input type="submit" class="btn btn-sm btn-block btn-default btn-primary" value="Visitar">
 		                                    <input type="hidden" name="torre" value=<?php echo $resultado_torre['idTorre'] ?>>
 		                                    <input type="hidden" name="qtdpost" value="20">
@@ -39,27 +39,22 @@ $torre = busca_torre($preferencia);
 		                                    <div class="theribbon"><center>fãs<br>1200</center></div>
 		                                    <div class="ribbon-background"></div>
 		                                </div>
-		                                <!-- /.ribbon -->
-
 		                                <div class="ribbon new">
 		                                    <div class="theribbon"><center>Visitas<br>+300</center></div>
 		                                    <div class="ribbon-background"></div>
 		                                </div>
-		                                <!-- /.ribbon -->
 		                            </div>
-	                            <!-- /.product -->
 	                            </div>
 	                    </form>
 	                  <?php endwhile ?>
                     </div>
                 </div>
 			</div>
-<?php
-if (isset($_POST['torre'])){
-	$topoTorre = $_POST['torre'];
-	$topoTorre = topo_torre($topoTorre);
-
-?>
+			<?php
+			if (isset($_POST['torre'])){
+				$topoTorre = $_POST['torre'];
+				$topoTorre = topo_torre($topoTorre);
+			?>
 			<div class="luis" id="customer-order">
                     <div class="box" id="contact">
                         <h2 class="text-center"><?php echo $topoTorre['nomeTorre'] ?></h2>
@@ -82,9 +77,10 @@ if (isset($_POST['torre'])){
                         <!-- /.panel-group -->
                     </div>
             </div>
-<?php
-}
+			<?php } ?>
+<!-- CONTEÚDO DAS TORRES SELECIONADAS ACIMA -->
 
+<?php
 //include'include/conteudos/listaTorres.php';
 //include_once 'include/conteudos/topoTorre.php';
 include_once 'include/conteudos/bannerTorre.php';
